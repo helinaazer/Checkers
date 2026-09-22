@@ -344,9 +344,17 @@ button {
 }
 
 .turn-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.05rem;
+  line-height: 1.25;
   font-weight: 600;
-  min-width: 170px;
+  /* Reserve the width of the longest label ("Black's turn (Computer)") and
+     never wrap, so the box keeps one constant size as the turn changes and
+     the status bar never re-flows. */
+  min-width: 15rem;
+  white-space: nowrap;
   text-align: center;
   padding: 8px 14px;
   border-radius: 10px;
@@ -376,6 +384,17 @@ button {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--panel-border);
+}
+
+/* "Black captured:" wraps to two lines where "Red captured:" fits on one, so
+   reserve two lines for both and the pair always matches. */
+.captured-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5em;
+  line-height: 1.25;
+  text-align: center;
 }
 
 .captured-count {
@@ -753,15 +772,21 @@ button {
     gap: 10px;
   }
 
-  /* Both tallies share one row above the board to save vertical space. */
+  /* Both tallies share one row above the board to save vertical space, at a
+     fixed width so the wider "Black" pill and the "Red" pill stay identical. */
   .captured {
     order: 1;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: auto;
-    padding: 8px 14px;
+    width: 9rem;
+    padding: 8px 10px;
     gap: 8px;
+  }
+
+  .captured-label {
+    min-height: 0;
+    white-space: nowrap;
   }
 
   .board {
@@ -772,12 +797,19 @@ button {
     font-size: 1.1rem;
   }
 
+  /* Full width, so the bar does not shrink-wrap to whichever label is
+     currently showing. */
   .status-bar {
+    width: 100%;
     gap: 8px;
   }
 
+  /* Give the indicator a row of its own: constant width, constant height,
+     and the buttons below it never shuffle. */
   .turn-indicator {
+    flex: 1 0 100%;
     min-width: 0;
+    max-width: 26rem;
     font-size: 0.95rem;
     padding: 7px 12px;
   }
@@ -832,6 +864,18 @@ button {
 
   .btn-start {
     padding: 13px 20px;
+    font-size: 1rem;
+  }
+
+  /* Keep the two tallies equal and still side by side at 320px. */
+  .captured {
+    width: 7.8rem;
+    font-size: 0.72rem;
+    padding: 7px 8px;
+    gap: 6px;
+  }
+
+  .captured-count {
     font-size: 1rem;
   }
 
@@ -905,6 +949,17 @@ button {
     gap: 8px;
   }
 
+  /* The sidebar is too narrow to hold the longest label on one line, so let
+     it wrap and reserve two lines instead — same height either way. */
+  .turn-indicator {
+    flex: 0 0 auto;
+    min-width: 0;
+    white-space: normal;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    min-height: calc(2.5em + 14px);
+  }
+
   .status-bar .btn-secondary {
     width: 100%;
   }
@@ -932,6 +987,11 @@ button {
     font-size: 0.7rem;
     line-height: 1.2;
     text-align: center;
+  }
+
+  .captured-label {
+    min-height: 2.5em;
+    white-space: normal;
   }
 
   .captured-count {

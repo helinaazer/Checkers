@@ -37,7 +37,6 @@ A locally-hosted, browser-based checkers game, playable either by two people sha
 - In Computer mode, the human's color is fixed for that game; the computer plays the other color and moves automatically (with a brief "thinking" pause) on its turns, including playing out its own forced multi-jumps automatically.
 - In Computer mode, the board is oriented so the human always plays from the bottom of the screen — the board is visually rotated 180° when the human plays Black, so their pieces are always nearest them regardless of chosen color. Human vs Human keeps the fixed Black-top/Red-bottom orientation, since players share the screen and switch sides physically.
 - A "Change Opponent" control returns from the game screen to the home screen (without affecting the in-progress board until a new game is started).
-- The computer opponent uses full lookahead search (minimax with alpha-beta pruning) over complete legal turns — including multi-jump chains as a single turn — favoring captures, kings, and board advancement; it accounts for the reinforcement variant rule when planning.
 
 ## Rules (standard checkers, applied to the 8-piece setup)
 1. **Movement:** Regular pieces move diagonally forward one square onto an empty dark square.

@@ -98,6 +98,8 @@ Both functions are pure — they take a board `b` as a parameter and read no glo
 - `movesForSquare(row, col)` — filters `legalMoves` down to those originating at `(row, col)`; used both for click handling and for rendering legal-move dots.
 
 ### Computer opponent (AI)
+Full lookahead search — minimax with alpha-beta pruning — over complete legal turns, favoring captures, kings, and board advancement, and accounting for the reinforcement variant rule when planning.
+
 The AI plans and plays one full turn at a time — a "turn" being either a single simple move or a complete forced multi-jump chain, since a player never gets to stop partway through a chain.
 
 - `getFullMoveSequences(b, player)` — builds on `getAllMoves`: for non-capture turns, wraps each simple move as a one-step sequence; for capture turns, recursively expands every forced-continuation branch (via `applyStepToBoard` on cloned boards + `getMovesForPiece`) into complete jump-chain sequences (`Move[]`). This is the unit of search and of AI execution.
