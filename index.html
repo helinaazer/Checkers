@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Checkers — 8 Piece Variant</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="instructionsBtn" class="instructions-btn" type="button" aria-label="How to play" title="How to play">?</button>
+
+  <div class="modal-overlay" id="instructionsModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>How to Play</h2>
+        <button id="closeInstructionsBtn" class="modal-close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>Goal</h3>
+        <p>Capture all of your opponent's pieces, or leave them with no legal move on their turn.</p>
+
+        <h3>Setup</h3>
+        <p>Each side starts with 8 pieces (instead of the usual 12), filling the two rows closest to that player on the dark squares only. Black moves first.</p>
+
+        <h3>Moving</h3>
+        <p>Regular pieces move diagonally forward, one square at a time, onto an empty dark square.</p>
+
+        <h3>Capturing</h3>
+        <p>Jump diagonally over an adjacent opponent piece into the empty square just beyond it to capture it. If any capture is available to you, you must take one — you can't make a non-capturing move instead. If that same piece can capture again right after landing, it must keep jumping in the same turn.</p>
+
+        <h3>Kings</h3>
+        <p>A piece that reaches the far row becomes a king and can then move and capture diagonally in any direction, not just forward.</p>
+
+        <h3>Reinforcements (this variant's twist)</h3>
+        <p>Each side's own back row starts with only 4 of its 8 pieces. The first time that row is completely empty of your pieces, 4 fresh pieces appear there automatically — once per side, per game.</p>
+
+        <h3>Winning</h3>
+        <p>You win the moment your opponent has no pieces left, or no legal move on their turn.</p>
+
+        <h3>Playing vs. the Computer</h3>
+        <p>Pick a color on the home screen — the board is always oriented with your pieces at the bottom. The computer pauses to "think," then plays its move, including any forced multi-jumps, automatically.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="home" id="homeScreen">
+    <div class="home-hero">
+      <div class="home-badge" aria-hidden="true">
+        <span class="badge-cell badge-cell--dark badge-cell--black"></span>
+        <span class="badge-cell badge-cell--light"></span>
+        <span class="badge-cell badge-cell--light"></span>
+        <span class="badge-cell badge-cell--dark badge-cell--red"></span>
+      </div>
+      <h1>Checkers</h1>
+      <p class="home-tagline">8-piece variant &middot; quick matches, full rules</p>
+    </div>
+
+    <div class="home-section">
+      <div class="home-label">Opponent</div>
+      <div class="option-grid">
+        <label class="option-card">
+          <input type="radio" name="mode" value="human" checked>
+          <span class="option-icon option-icon--duo">
+            <span class="mini-piece mini-piece--black"></span>
+            <span class="mini-piece mini-piece--red"></span>
+          </span>
+          <span class="option-title">Human</span>
+          <span class="option-desc">2 players, same screen</span>
+        </label>
+        <label class="option-card">
+          <input type="radio" name="mode" value="computer">
+          <span class="option-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+              <rect x="9.5" y="9.5" width="5" height="5" rx="1"></rect>
+              <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path>
+            </svg>
+          </span>
+          <span class="option-title">Computer</span>
+          <span class="option-desc">Play solo vs the AI</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="home-section" id="colorChoice" hidden>
+      <div class="home-label">Play as</div>
+      <div class="option-grid">
+        <label class="option-card">
+          <input type="radio" name="color" value="black" checked>
+          <span class="option-icon"><span class="option-swatch swatch-black"></span></span>
+          <span class="option-title">Black</span>
+          <span class="option-desc">Moves first</span>
+        </label>
+        <label class="option-card">
+          <input type="radio" name="color" value="red">
+          <span class="option-icon"><span class="option-swatch swatch-red"></span></span>
+          <span class="option-title">Red</span>
+          <span class="option-desc">Moves second</span>
+        </label>
+      </div>
+    </div>
+
+    <button id="startBtn" class="btn-primary btn-start">Start Game</button>
+  </div>
+
+  <div class="game" id="gameScreen" hidden>
+    <h1>Checkers <span class="subtitle">(8-piece start)</span></h1>
+
+    <div class="status-bar">
+      <div class="turn-indicator" id="turnIndicator">Black's turn</div>
+      <button id="restartBtn" class="btn-secondary">Restart</button>
+      <button id="homeBtn" class="btn-secondary">Change Opponent</button>
+    </div>
+
+    <div class="board-wrap">
+      <div class="captured captured-black" id="capturedBlack">
+        <span class="captured-label">Black captured:</span>
+        <span class="captured-count" id="capturedBlackCount">0</span>
+      </div>
+
+      <div class="board" id="board"></div>
+
+      <div class="captured captured-red" id="capturedRed">
+        <span class="captured-label">Red captured:</span>
+        <span class="captured-count" id="capturedRedCount">0</span>
+      </div>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="overlay" id="gameOverOverlay" hidden>
+      <div class="overlay-card">
+        <div class="overlay-title" id="gameOverText">Game Over</div>
+        <div class="overlay-actions">
+          <button id="playAgainBtn" class="btn-primary">Play Again</button>
+          <button id="overlayHomeBtn" class="btn-secondary">Change Opponent</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
